@@ -1,63 +1,42 @@
 # Load the IOTA app onto the Ledger Nano S
-Environment to load the IOTA app onto the Ledger Nano S
 
-Here we try to use natively available crypto logic to create IOTA Seeds and sign transactions on the fly. It's currently heavily in alpha so don't trust this yet!
-
-See [blue-app-iota GitHub repository](https://github.com/IOTA-Ledger/blue-app-iota) for the original source code.
-
-See [Ledger's documentation](http://ledger.readthedocs.io) to get more info about the inner workings.
-
-## How to get started
-
-### Requirements
+## Prerequisites
 
 - Make sure that your Ledger Nano S is running firmware 1.4.2.
 For update instructions see: [How to update my Ledger Nano S with the firmware 1.4](https://support.ledgerwallet.com/hc/en-us/articles/360001340473-How-to-update-my-Ledger-Nano-S-with-the-firmware-1-4)
+- Ensure that the following packages are installed:
+  - libudev-dev
+  - libusb-1.0-0-dev
+  - python-dev
+  - virtualenv
 
-### Preparing environment under Debian and Ubuntu 
+### Ledger udev rules
 
-- Clone this repo
-- Execute the following commands to setup your environment:
+When running on Linux, make sure the following rules have been added to `/etc/udev/rules.d/`. This is prerequisite for any software (not just this script) in order to access the Ledger Nano S!
+
+Ensure that the current user belongs to the `plugdev` group and install the rules provided by LedgerHQ:
 ```
-cd blue-app-iota-loader
-./install_env.sh
+wget -q -O - https://raw.githubusercontent.com/LedgerHQ/udev-rules/master/add_udev_rules.sh | sudo bash
 ```
-- If you execute it for the first time, maybe you have to log out and log in again to get correct group rights
 
-### Load the IOTA Ledger app
+If connection issues still persist afterwards, please refer to
+https://support.ledgerwallet.com/hc/en-us/articles/115005165269-Fix-connection-issues
 
-- Connect your Ledger to the PC and unlock it
-- To load the app, be sure that the dashboard is opened in the Ledger
-- Run the following command to load the pre-compiled app onto the Ledger
+## Install the ledgerblue Python package
+
+It is recommended to install ledgerblue in a [Virtual Environment](http://docs.python-guide.org/en/latest/dev/virtualenvs/).
 ```
-python download_app.py
+virtualenv ledger
+source ledger/bin/activate
+pip install ledgerblue
 ```
-- Accept all the messages on the Ledger
 
-### Delete the IOTA Ledger app
+## Load the IOTA Ledger app
 
-- Connect your Ledger to the PC and unlock it
-- To delete the app, be sure that the dashboard is opened in the Ledger
-- Run the following command to delete the IOTA app on the Ledger
+- Connect your Ledger to the PC and unlock it.
+- To load the app, be sure that the dashboard is opened in the Ledger.
+- Run the following command from the folder that contains the `app.hex` to load the pre-compiled app onto the Ledger:
 ```
-python delete_app.py
+python install_app.py
 ```
-- Accept all the messages on the Ledger
-
-## Documentation
-
-See: [blue-app-iota README](https://github.com/IOTA-Ledger/blue-app-iota/blob/master/README.md)
-
-## Contributing
-
-### Donations
-Would you like to donate to help the development team? Send some IOTA to the following address:
-```
-ADLJXS9SKYQKMVQFXR9JDUUJHJWGDNWHQZMDGJFGZOX9BZEKDSXBSPZTTWEYPTNM9OZMYDQWZXFHRTXRCOITXAGCJZ
-```
-![IOTA Ledger Donation](resources/ledger_donation.png)
-
-Please know that the donations made to this address will be shared with everyone who contributes (the contributions has to be worth something, of course)
-
-### As a developer
-Would you like to contribute as a dev? Please check out our [Discord channel](https://discord.gg/U3qRjZj) to contact us!
+- Accept all the messages on the Ledger.

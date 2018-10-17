@@ -1,6 +1,6 @@
 import os
 
-python_cmd          = ".pyenv/bin/python"
+python_cmd          = "python"
 target_id           = 0x31100004
 min_version_os      = 0x01050500    # e.g. 1.5.5 => 1.5.5.0 => 0x01050500
 min_version_mcu     = 0x01070000    # e.g. 1.7   => 1.7.0.0 => 0x01070000
